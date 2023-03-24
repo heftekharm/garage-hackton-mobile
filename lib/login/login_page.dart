@@ -21,12 +21,22 @@ class LoginPage extends StatelessWidget {
             ),
             const SizedBox(height: 64),
             const SizedBox(
-              width: 300,
-              child: TextField(
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(), hintText: "شماره بده"),
-              ),
-            )
+                width: 300,
+                child: TextField(
+                  textAlign: TextAlign.center,
+                  decoration: InputDecoration(
+                    floatingLabelAlignment: FloatingLabelAlignment.start,
+                    labelText: "شماره بده",
+                    border: OutlineInputBorder(),
+                  ),
+                )),
+            const SizedBox(height: 32),
+            FilledButton(
+                onPressed: () {},
+                child: const Text(
+                  "دریافت کد",
+                  style: TextStyle(fontWeight: FontWeight.w100),
+                ))
           ],
         ),
       ),

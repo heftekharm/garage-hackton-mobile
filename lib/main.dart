@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:garage/login/login_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -12,6 +13,13 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      localizationsDelegates: const [
+        GlobalCupertinoLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: const [Locale("fa", "IR")],
+      locale: const Locale("fa", "IR"),
       theme: AppColors().toThemeData(),
       home: const LoginPage(),
     );
