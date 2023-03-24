@@ -28,7 +28,7 @@ class MainApp extends StatelessWidget {
 
 class AppColors {
   Color get primaryColor => const Color(0xff205db9);
-  Color get errorColor => const Color(0xff205db9);
+  Color get errorColor => const Color(0xffBA1A1A);
   Color get onOtherColor => Colors.white;
   Color get backgroundColor => Colors.white;
   Color get onBackgroundColor => const Color(0xff1B1B1F);
@@ -50,10 +50,8 @@ class AppColors {
         onSurface: onBackgroundColor,
       ),
       textTheme: notoSansTextTheme.copyWith(
-        displayMedium:
-            notoSansTextTheme.displayMedium?.copyWith(color: primaryColor),
-        labelMedium: notoSansTextTheme.labelMedium
-            ?.copyWith(color: const Color(0xff747474)),
+        displayMedium: notoSansTextTheme.displayMedium?.copyWith(color: primaryColor),
+        labelMedium: notoSansTextTheme.labelMedium?.copyWith(color: const Color(0xff747474)),
       ),
     );
   }
