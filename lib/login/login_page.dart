@@ -42,13 +42,14 @@ class LoginPage extends StatelessWidget {
           child: TextField(
             inputFormatters: [FilteringTextInputFormatter.digitsOnly, LengthLimitingTextInputFormatter(8)],
             textAlign: TextAlign.left,
-            onChanged: (value) => context.read<LoginBloc>().add(LoginPhonenumberChanged(value)),
+            onChanged: (value) => context.read<LoginBloc>().add(LoginPhonenumberChanged("091$value")),
             decoration: InputDecoration(
                 errorText: state.errorMessage,
                 floatingLabelAlignment: FloatingLabelAlignment.start,
                 labelText: "شماره بده",
                 border: const OutlineInputBorder(),
-                suffixText: "091"),
+                suffixText: "091",
+                prefixIcon: Icon(Icons.close_outlined)),
           ),
         );
       },

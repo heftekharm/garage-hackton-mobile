@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
 
+const phoneNumberLength = 11;
+
 enum SubmitStatus { notReady, ready, progress }
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
@@ -8,42 +10,46 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<LoginPhonenumberSubmited>(_onLoginPhoneNumberSubmitted);
   }
 
-  String _phoneNumber = "";
-
   _onLoginPhoneNumberChanged(LoginPhonenumberChanged event, Emitter<LoginState> emit) {
-    if (event.phoneNumber.length == 8) {
-      _phoneNumber = event.phoneNumber;
-      emit(state.copyWith(submitStatus: SubmitStatus.ready));
-    } else {
-      emit(state.copyWith(submitStatus: SubmitStatus.notReady));
-    }
+    var newState = state.copyWith(currentPhoneNumberValue: event.phoneNumber);
+    emit(newState);
   }
 
-  _onLoginPhoneNumberSubmitted(LoginPhonenumberSubmited event, Emitter<LoginState> emit) {
-    if (_phoneNumber.startsWith("1")) {
-      emit(state.copyWith(errorMessage: "شماره اشتباهه"));
+  _onLoginPhoneNumberSubmitted(LoginPhonenumberSubmited event, Emitter<LoginState> emit) async {
+    var newState = state.copyWith(isSubmitting: true);
+    emit(newState);
+    await Future.delayed(const Duration(seconds: 1));
+    if (state.currentPhoneNumberValue == "09179617587") {
+      newState = newState.copyWith(isLogined: true);
     } else {
-      emit(state.copyWith(errorMessage: null));
+      newState = newState.copyWith(errorMessage: "شماره اشتباهه");
     }
+    newState = state.copyWith(isSubmitting: false);
+    emit(newState);
   }
 }
 
 //states
 class LoginState {
-  SubmitStatus submitStatus;
-  String? errorMessage;
-  bool isLogined;
+  final String? errorMessage;
+  final bool isLogined;
+  final String currentPhoneNumberValue;
+  final bool isSubmitting;
 
-  LoginState({this.submitStatus = SubmitStatus.notReady, this.isLogined = false, this.errorMessage});
+  LoginState({this.currentPhoneNumberValue = "", this.isSubmitting = false, this.isLogined = false, this.errorMessage});
 
-  LoginState copyWith({
-    SubmitStatus? submitStatus,
-    String? errorMessage,
-  }) {
+  SubmitStatus get submitStatus {
+    if (isSubmitting) return SubmitStatus.progress;
+    if (currentPhoneNumberValue.length == phoneNumberLength) return SubmitStatus.ready;
+    return SubmitStatus.notReady;
+  }
+
+  LoginState copyWith({bool? isSubmitting, String? errorMessage, String? currentPhoneNumberValue, bool? isLogined}) {
     return LoginState(
-      submitStatus: submitStatus ?? this.submitStatus,
-      errorMessage: errorMessage ?? this.errorMessage,
-    );
+        isSubmitting: isSubmitting ?? this.isSubmitting,
+        errorMessage: errorMessage ?? this.errorMessage,
+        isLogined: isLogined ?? this.isLogined,
+        currentPhoneNumberValue: currentPhoneNumberValue ?? this.currentPhoneNumberValue);
   }
 }
 

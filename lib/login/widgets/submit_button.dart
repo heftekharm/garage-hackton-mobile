@@ -10,18 +10,22 @@ class SubmitButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var onPressedCallback = status == SubmitStatus.ready ? onSubmit : null;
+
     return FilledButton(
-      onPressed: status == SubmitStatus.notReady
-          ? null
-          : () {
-              if (status == SubmitStatus.ready) {
-                onSubmit();
-              }
-            },
-      child: Text(
-        text,
-        style: const TextStyle(fontWeight: FontWeight.w100),
+      onPressed: onPressedCallback,
+      child: SizedBox(
+        width: 65,
+        height: 35,
+        child: /* status == SubmitStatus.progress
+              ? _rotatingElipse()
+              :  */
+            Text(text, style: const TextStyle(fontWeight: FontWeight.w100)),
       ),
     );
+  }
+
+  Widget _rotatingElipse() {
+    return Image.asset("assets/elipse.png");
   }
 }
