@@ -34,6 +34,7 @@ class AppColors {
   Color get errorColor => const Color(0xffBA1A1A);
   Color get onOtherColor => Colors.white;
   Color get backgroundColor => Colors.white;
+  Color get primaryContainerColor => const Color(0xffDAE2FF);
   Color get onBackgroundColor => const Color(0xff1B1B1F);
   Color get onSurfaceVariantColor => const Color(0xff44464F);
 
@@ -60,6 +61,7 @@ class AppColors {
           onBackground: onBackgroundColor,
           surface: backgroundColor,
           onSurface: onBackgroundColor,
+          primaryContainer: primaryColor,
           onSurfaceVariant: onSurfaceVariantColor),
       tabBarTheme: TabBarTheme(
           labelColor: onSurfaceVariantColor,
