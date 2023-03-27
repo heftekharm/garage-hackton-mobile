@@ -9,7 +9,7 @@ class BaseService {
   final dio = Dio();
 
   BaseService() {
-    dio.options.baseUrl = "garage.oddrun.ir";
+    dio.options.baseUrl = "https://garage.oddrun.ir/api/";
     SharedPreferences.getInstance().then((value) {
       _prefs = value;
     });
@@ -28,5 +28,9 @@ class BaseService {
 
   setToken(String token) {
     _prefs?.setString(_tokenKey, token);
+  }
+
+  removeToken() {
+    _prefs?.remove(_tokenKey);
   }
 }
