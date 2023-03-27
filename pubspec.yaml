@@ -7,12 +7,14 @@ environment:
   sdk: '>=2.19.4 <3.0.0'
 
 dependencies:
+  dio: ^5.0.3
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.2
   flutter_localizations:
     sdk: flutter
   google_fonts: ^4.0.3
+  shared_preferences: ^2.0.20
 
 dev_dependencies:
   flutter_test:
