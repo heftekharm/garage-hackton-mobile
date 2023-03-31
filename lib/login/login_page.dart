@@ -44,12 +44,13 @@ class LoginPage extends StatelessWidget {
             textAlign: TextAlign.left,
             onChanged: (value) => context.read<LoginBloc>().add(LoginPhonenumberChanged("091$value")),
             decoration: InputDecoration(
-                errorText: state.errorMessage,
-                floatingLabelAlignment: FloatingLabelAlignment.start,
-                labelText: "شماره بده",
-                border: const OutlineInputBorder(),
-                suffixText: "091",
-                prefixIcon: Icon(Icons.close_outlined)),
+              errorText: state.errorMessage,
+              floatingLabelAlignment: FloatingLabelAlignment.start,
+              labelText: state.inputHintCaption,
+              border: const OutlineInputBorder(),
+              suffixText: "091",
+              prefixIcon: const Icon(Icons.close_outlined),
+            ),
           ),
         );
       },
@@ -59,8 +60,8 @@ class LoginPage extends StatelessWidget {
   Widget submitButton() {
     return BlocBuilder<LoginBloc, LoginState>(
       builder: (context, state) {
-        return SubmitButton("دریافت کد", state.submitStatus, () {
-          context.read<LoginBloc>().add(LoginPhonenumberSubmited());
+        return SubmitButton(state.submitButtonCaption, state.submitStatus, () {
+          context.read<LoginBloc>().add(const LoginSubmited());
         });
       },
     );

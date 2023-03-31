@@ -4,11 +4,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 const _tokenKey = "access_token";
 
 class BaseService {
+  static BaseService? _baseService;
+
   SharedPreferences? _prefs;
 
   final dio = Dio();
 
-  BaseService() {
+  BaseService._() {
     dio.options.baseUrl = "https://garage.oddrun.ir/api/";
     SharedPreferences.getInstance().then((value) {
       _prefs = value;
@@ -24,6 +26,11 @@ class BaseService {
         handler.next(options);
       },
     ));
+  }
+
+  factory BaseService() {
+    _baseService = _baseService ?? BaseService._();
+    return _baseService!;
   }
 
   setToken(String token) {
