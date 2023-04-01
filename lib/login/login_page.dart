@@ -4,6 +4,7 @@ import 'package:garage/login/login_bloc.dart';
 import 'package:garage/login/widgets/circle.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:garage/login/widgets/submit_button.dart';
+import 'package:go_router/go_router.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -12,22 +13,27 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => LoginBloc(),
-      child: Scaffold(
-        body: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text('گاراژ', style: Theme.of(context).textTheme.displayMedium),
-              const SizedBox(height: 8),
-              Text('سیستم رزرواسیون مزایده‌ای', style: Theme.of(context).textTheme.labelMedium),
-              const SizedBox(height: 64),
-              inputField(),
-              const SizedBox(height: 32),
-              submitButton(),
-              const Spacer(),
-              bottomBgWidget()
-            ],
+      child: BlocListener<LoginBloc, LoginState>(
+        listener: (context, state) {
+          if (state.isLogined) context.go("/home");
+        },
+        child: Scaffold(
+          body: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text('گاراژ', style: Theme.of(context).textTheme.displayMedium),
+                const SizedBox(height: 8),
+                Text('سیستم رزرواسیون مزایده‌ای', style: Theme.of(context).textTheme.labelMedium),
+                const SizedBox(height: 64),
+                inputField(),
+                const SizedBox(height: 32),
+                submitButton(),
+                const Spacer(),
+                bottomBgWidget()
+              ],
+            ),
           ),
         ),
       ),

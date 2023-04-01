@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:garage/common/base_service.dart';
+import 'package:garage/common/user_repository.dart';
 
 enum LoginResponseStatus { success, notExists, error }
 
@@ -7,6 +8,7 @@ enum VerifyResponseStatus { success, error }
 
 class AuthRepository {
   final baseService = BaseService();
+  final userRepository = UserRepository();
 
   Future<LoginResponseStatus> login(String phoneNumber) async {
     var response = await baseService.dio.post("auth/request", data: {"phone": phoneNumber});
@@ -27,7 +29,7 @@ class AuthRepository {
     if (response.isOk) {
       try {
         String token = response.data["data"]?["token"] as String;
-        baseService.setToken(token);
+        userRepository.setToken(token);
       } catch (e) {
         return VerifyResponseStatus.error;
       }

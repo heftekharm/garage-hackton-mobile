@@ -1,19 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:garage/common/base_service.dart';
+import 'package:garage/common/user_repository.dart';
 import 'package:garage/home/home_page.dart';
 import 'package:garage/login/login_page.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(MainApp());
 }
 
 class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+  MainApp({super.key});
+  final router = GoRouter(initialLocation: "/login", routes: [
+    GoRoute(
+      path: "/login",
+      builder: (context, state) => const LoginPage(),
+    ),
+    GoRoute(
+      path: "/home",
+      builder: (context, state) => const HomePage(),
+    )
+  ]);
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    var isLogined = UserRepository().isLogined;
+
+    if (isLogined) router.go("/home");
+
+    return MaterialApp.router(
       localizationsDelegates: const [
         GlobalCupertinoLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
@@ -23,7 +40,7 @@ class MainApp extends StatelessWidget {
       supportedLocales: const [Locale("fa", "IR")],
       locale: const Locale("fa", "IR"),
       theme: AppColors().toThemeData(),
-      home: const LoginPage(),
+      routerConfig: router,
     );
   }
 }
