@@ -20,7 +20,7 @@ class SubmitButton extends StatelessWidget {
         child: /* status == SubmitStatus.progress
               ? _rotatingElipse()
               :  */
-            Text(text, style: const TextStyle(fontWeight: FontWeight.w100)),
+            Text(text, textAlign: TextAlign.center, style: const TextStyle(fontWeight: FontWeight.w100)),
       ),
     );
   }

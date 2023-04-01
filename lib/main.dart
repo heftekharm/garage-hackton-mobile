@@ -23,7 +23,7 @@ class MainApp extends StatelessWidget {
       supportedLocales: const [Locale("fa", "IR")],
       locale: const Locale("fa", "IR"),
       theme: AppColors().toThemeData(),
-      home: const HomePage(),
+      home: const LoginPage(),
     );
   }
 }

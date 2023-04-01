@@ -40,4 +40,6 @@ class BaseService {
   removeToken() {
     _prefs?.remove(_tokenKey);
   }
+
+  bool get isTokenExisted => _prefs?.getString(_tokenKey) != null;
 }

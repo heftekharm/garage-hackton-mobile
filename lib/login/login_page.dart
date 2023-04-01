@@ -37,18 +37,22 @@ class LoginPage extends StatelessWidget {
   Widget inputField() {
     return BlocBuilder<LoginBloc, LoginState>(
       builder: (context, state) {
+        String inputHintCaption = state.shouldVerify ? "کد رو بزن" : "شماره بده";
+        int textMaxLength = state.shouldVerify ? 6 : 8;
+        var suffixText = state.shouldVerify ? null : "091";
         return SizedBox(
           width: 300,
           child: TextField(
-            inputFormatters: [FilteringTextInputFormatter.digitsOnly, LengthLimitingTextInputFormatter(8)],
+            key: ValueKey(state.shouldVerify),
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly, LengthLimitingTextInputFormatter(textMaxLength)],
             textAlign: TextAlign.left,
-            onChanged: (value) => context.read<LoginBloc>().add(LoginPhonenumberChanged("091$value")),
+            onChanged: (value) => context.read<LoginBloc>().add(state.shouldVerify ? LoginOTPChanged(value) : LoginPhonenumberChanged("091$value")),
             decoration: InputDecoration(
               errorText: state.errorMessage,
               floatingLabelAlignment: FloatingLabelAlignment.start,
-              labelText: state.inputHintCaption,
+              labelText: inputHintCaption,
               border: const OutlineInputBorder(),
-              suffixText: "091",
+              suffixText: suffixText,
               prefixIcon: const Icon(Icons.close_outlined),
             ),
           ),
@@ -60,7 +64,8 @@ class LoginPage extends StatelessWidget {
   Widget submitButton() {
     return BlocBuilder<LoginBloc, LoginState>(
       builder: (context, state) {
-        return SubmitButton(state.submitButtonCaption, state.submitStatus, () {
+        String submitButtonCaption = state.shouldVerify ? "تایید" : "دریافت کد";
+        return SubmitButton(submitButtonCaption, state.submitStatus, () {
           context.read<LoginBloc>().add(const LoginSubmited());
         });
       },

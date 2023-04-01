@@ -23,13 +23,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   _onLoginSubmitted(LoginSubmited event, Emitter<LoginState> emit) async {
     var newState = state.copyWith(isSubmitting: true);
     emit(newState);
-
     if (state.shouldVerify) {
       newState = await __onOTPSubmitted(newState);
     } else {
       newState = await __onPhoneNumberSubmitted(newState);
     }
-    newState = state.copyWith(isSubmitting: false);
+    newState = newState.copyWith(isSubmitting: false);
     emit(newState);
   }
 
@@ -118,9 +117,6 @@ class LoginState {
       currentOTPValue: currentOTPValue ?? this.currentOTPValue,
     );
   }
-
-  String get submitButtonCaption => shouldVerify ? "تایید" : "دریافت کد";
-  String get inputHintCaption => shouldVerify ? "کد رو بزن" : "شماره بده";
 }
 
 //events
