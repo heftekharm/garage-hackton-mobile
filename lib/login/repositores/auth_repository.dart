@@ -29,7 +29,8 @@ class AuthRepository {
     if (response.isOk) {
       try {
         String token = response.data["data"]?["token"] as String;
-        userRepository.setToken(token);
+        userRepository.setUser(phoneNumber, token);
+        return VerifyResponseStatus.success;
       } catch (e) {
         return VerifyResponseStatus.error;
       }

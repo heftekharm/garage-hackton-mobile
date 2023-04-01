@@ -1,6 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 const _tokenKey = "access_token";
+const _phoneNumberKey = "phone_number";
 
 class UserRepository {
   static UserRepository? _instance;
@@ -18,15 +19,18 @@ class UserRepository {
     });
   }
 
-  setToken(String token) {
+  setUser(String phoneNumber, String token) {
+    _prefs?.setString(_phoneNumberKey, phoneNumber);
     _prefs?.setString(_tokenKey, token);
   }
 
-  removeToken() {
+  removeUser() {
     _prefs?.remove(_tokenKey);
+    _prefs?.remove(_phoneNumberKey);
   }
 
   String? getToken() => _prefs?.getString(_tokenKey);
+  String? getPhoneNumber() => _prefs?.getString(_phoneNumberKey);
 
   bool get isLogined => getToken() != null;
 }
