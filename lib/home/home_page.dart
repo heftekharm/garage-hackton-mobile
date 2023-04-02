@@ -17,13 +17,15 @@ class HomePage extends StatelessWidget {
             elevation: 0,
             backgroundColor: Colors.transparent,
             title: BlocBuilder<HomeCubit, HomeState>(
+              buildWhen: (previous, current) => current != previous && current is HomePageLoadedState,
               builder: (context, state) {
+                state = state as HomePageLoadedState;
                 return Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(state.userState.name, style: Theme.of(context).textTheme.titleMedium),
-                    Text('بدهی : ${state.userState.debt}', style: Theme.of(context).textTheme.titleSmall),
+                    Text(state.user.name, style: Theme.of(context).textTheme.titleMedium),
+                    Text('بدهی : ${state.user.debt}', style: Theme.of(context).textTheme.titleSmall),
                   ],
                 );
               },
@@ -50,8 +52,10 @@ class HomePage extends StatelessWidget {
             bottom: const TabBar(indicatorPadding: EdgeInsets.only(top: 45), tabs: [Tab(text: "هفته جاری"), Tab(text: "هفته آتی")]),
           ),
           body: BlocBuilder<HomeCubit, HomeState>(
+            buildWhen: (previous, current) => current != previous && current is HomePageLoadedState,
             builder: (context, state) {
-              return TabBarView(children: [getWeekTab(context, state.currentWeekState), getWeekTab(context, state.nextWeekState)]);
+              state = state as HomePageLoadedState;
+              return TabBarView(children: [getWeekTab(context, state.currentWeek), getWeekTab(context, state.nextWeek)]);
             },
           ),
         ),
@@ -59,7 +63,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget getWeekTab(BuildContext context, List<DayState> weekState) {
+  Widget getWeekTab(BuildContext context, List<DayModel> weekState) {
     return Column(
       children: [
         ...weekState.map(

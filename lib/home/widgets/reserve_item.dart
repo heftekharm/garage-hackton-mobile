@@ -54,6 +54,6 @@ class ReserveItemWidget extends StatelessWidget {
     );
   }
 
-  static ReserveItemWidget fromDayState(DayState dayState, VoidCallback onReserve) =>
+  static ReserveItemWidget fromDayState(DayModel dayState, VoidCallback onReserve) =>
       ReserveItemWidget(dayState.weekDay, dayState.date, dayState.reserverStatus, dayState.cost.toString(), onReserve);
 }
