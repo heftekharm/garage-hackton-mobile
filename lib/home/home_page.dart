@@ -9,14 +9,14 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => HomeBloc(),
+      create: (context) => HomeCubit(),
       child: DefaultTabController(
         length: 2,
         child: Scaffold(
           appBar: AppBar(
             elevation: 0,
             backgroundColor: Colors.transparent,
-            title: BlocBuilder<HomeBloc, HomeState>(
+            title: BlocBuilder<HomeCubit, HomeState>(
               builder: (context, state) {
                 return Column(
                   mainAxisSize: MainAxisSize.min,
@@ -39,7 +39,7 @@ class HomePage extends StatelessWidget {
                 scaleX: -1,
                 child: IconButton(
                     onPressed: () {
-                      context.read<HomeBloc>().add(ExitHomeEvent());
+                      context.read<HomeCubit>().exit();
                     },
                     icon: Icon(
                       Icons.exit_to_app_rounded,
@@ -47,9 +47,9 @@ class HomePage extends StatelessWidget {
                     )),
               ),
             ],
-            bottom: TabBar(indicatorPadding: const EdgeInsets.only(top: 45), tabs: [Tab(text: "هفته جاری"), Tab(text: "هفته آتی")]),
+            bottom: const TabBar(indicatorPadding: EdgeInsets.only(top: 45), tabs: [Tab(text: "هفته جاری"), Tab(text: "هفته آتی")]),
           ),
-          body: BlocBuilder<HomeBloc, HomeState>(
+          body: BlocBuilder<HomeCubit, HomeState>(
             builder: (context, state) {
               return TabBarView(children: [getWeekTab(context, state.currentWeekState), getWeekTab(context, state.nextWeekState)]);
             },
@@ -59,14 +59,14 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget getWeekTab(BuildContext context, WeekState weekState) {
+  Widget getWeekTab(BuildContext context, List<DayState> weekState) {
     return Column(
       children: [
-        ...weekState.days.map(
+        ...weekState.map(
           (e) => ReserveItemWidget.fromDayState(
             e,
             () {
-              context.read<HomeBloc>().add(ReserveEvent(e.date, e.cost));
+              context.read<HomeCubit>().reserve(e.date, e.cost);
             },
           ),
         ),

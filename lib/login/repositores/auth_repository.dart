@@ -11,6 +11,7 @@ class AuthRepository {
   final userRepository = UserRepository();
 
   Future<LoginResponseStatus> login(String phoneNumber) async {
+    return LoginResponseStatus.success;
     var response = await baseService.dio.post("auth/request", data: {"phone": phoneNumber});
 
     if (response.isOk) {
@@ -25,6 +26,8 @@ class AuthRepository {
   }
 
   Future<VerifyResponseStatus> verify(String phoneNumber, String code) async {
+    return VerifyResponseStatus.success;
+
     var response = await baseService.dio.post("auth/verify", data: {"phone": phoneNumber, "code": code});
     if (response.isOk) {
       try {

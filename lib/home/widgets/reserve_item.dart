@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:garage/home/home_bloc.dart';
 
-enum ReserverStatus { reservable, reserved, full, holiday }
+enum ReserverStatus { holiday, passed, reservable, biddableFull, notBiddableFull, reserved }
 
 const Map<ReserverStatus, String> reserveStatusTextMap = {
-  ReserverStatus.reservable: "رزرو کن",
-  ReserverStatus.reserved: "رزرو کردی",
-  ReserverStatus.full: "پر شده",
   ReserverStatus.holiday: "تعطیل",
+  ReserverStatus.passed: "گذشته",
+  ReserverStatus.reservable: "رزرو کن",
+  ReserverStatus.biddableFull: "(قابل رزرو) پر شده",
+  ReserverStatus.notBiddableFull: "پر شده",
+  ReserverStatus.reserved: "رزرو کردی",
 };
 
 class ReserveItemWidget extends StatelessWidget {
