@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:garage/home/home_bloc.dart';
+import 'package:garage/login/login_bloc.dart';
+import 'package:garage/login/widgets/submit_button.dart';
 
 enum ReserverStatus { holiday, passed, reservable, biddableFull, notBiddableFull, reserved }
 
@@ -30,23 +32,69 @@ class ReserveItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 4,
-      color: Theme.of(context).colorScheme.primaryContainer,
-      child: Padding(
+    var shouldButtonBeEnabled = reserverStatus == ReserverStatus.reservable || reserverStatus == ReserverStatus.biddableFull;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8),
+      child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(Radius.circular(8)),
+          color: reserverStatus == ReserverStatus.reserved ? Theme.of(context).colorScheme.primaryContainer : Theme.of(context).colorScheme.surface,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(.9),
+              blurRadius: 2.0, // soften the shadow
+              spreadRadius: 0.5, //extend the shadow
+            )
+          ],
+        ),
         child: Row(
           children: [
             Expanded(
-                child:
-                    Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [Text("شنبه"), Text("17 بهمن")])),
+                child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [Text(weekDay), Text(date)])),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Text(cost),
+              child: Text("$cost تومان"),
             ),
             FilledButton(
-              onPressed: reserverStatus == ReserverStatus.reservable ? onReserve : null,
-              child: Text(reserveStatusTextMap[reserverStatus]!),
+              style: ButtonStyle(backgroundColor: shouldButtonBeEnabled ? null : const MaterialStatePropertyAll(Colors.transparent)),
+              onPressed: shouldButtonBeEnabled
+                  ? () {
+                      showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
+                                titleTextStyle: Theme.of(context).textTheme.titleLarge,
+                                title: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [Text("$weekDay ($date)    "), Text("$cost تومان")],
+                                ),
+                                content: const Text("خداوکیلی مطمینی؟"),
+                                titlePadding: const EdgeInsets.symmetric(vertical: 4, horizontal: 24),
+                                actions: [
+                                  SubmitButton(
+                                    "ها کاکو",
+                                    SubmitStatus.ready,
+                                    () {
+                                      onReserve();
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                  TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text("نچ"))
+                                ],
+                              ));
+                    }
+                  : null,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4),
+                child: Text(reserveStatusTextMap[reserverStatus]!),
+              ),
             )
           ],
         ),

@@ -78,7 +78,7 @@ class AppColors {
           onBackground: onBackgroundColor,
           surface: backgroundColor,
           onSurface: onBackgroundColor,
-          primaryContainer: primaryColor,
+          primaryContainer: primaryContainerColor,
           onSurfaceVariant: onSurfaceVariantColor),
       tabBarTheme: TabBarTheme(
           labelColor: onSurfaceVariantColor,

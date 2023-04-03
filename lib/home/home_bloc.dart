@@ -6,9 +6,12 @@ import 'package:garage/home/widgets/reserve_item.dart';
 class HomeCubit extends Cubit<HomeState> {
   final _homeRepository = HomeRepository();
 
-  HomeCubit() : super(const HomePageLoadedState(UserModel("", ""))) {}
+  HomeCubit() : super(const HomePageLoadedState(UserModel("", ""))) {
+    fetch();
+  }
 
   fetch() async {
+    await Future.delayed(Duration(seconds: 1));
     var homeState = await _homeRepository.getInfo();
     emit(homeState);
   }
@@ -67,6 +70,8 @@ class HomeState extends Equatable {
   @override
   List<Object?> get props => const [];
 }
+
+class SubmittingRequest extends HomeState {}
 
 class HomePageLoadedState extends HomeState {
   final UserModel user;
