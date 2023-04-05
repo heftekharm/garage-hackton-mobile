@@ -11,13 +11,15 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   fetch() async {
-    await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(const Duration(milliseconds: 200));
     var homeState = await _homeRepository.getInfo();
     emit(homeState);
   }
 
   reserve(String date, int cost) async {
-    var result = await _homeRepository.reserve(date, cost);
+    var result = ReserveRequestResult("رزرو شد", false); //await _homeRepository.reserve(date, cost);
+    emit(ReserveRequestResultReceivedState(result.message ?? "رزرو شد. برو حالشو ببر", result.isReserved));
+    fetch();
   }
 
   exit() {}
@@ -72,6 +74,15 @@ class HomeState extends Equatable {
 }
 
 class SubmittingRequest extends HomeState {}
+
+class ReserveRequestResultReceivedState extends HomeState {
+  final String message;
+  final bool isReserved;
+
+  const ReserveRequestResultReceivedState(this.message, this.isReserved);
+  @override
+  List<Object?> get props => [message, isReserved];
+}
 
 class HomePageLoadedState extends HomeState {
   final UserModel user;

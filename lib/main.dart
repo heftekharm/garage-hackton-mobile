@@ -20,7 +20,7 @@ class MainApp extends StatelessWidget {
     ),
     GoRoute(
       path: "/home",
-      builder: (context, state) => const HomePage(),
+      builder: (context, state) => HomePage(),
     )
   ]);
 

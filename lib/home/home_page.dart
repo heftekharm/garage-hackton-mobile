@@ -4,7 +4,8 @@ import 'package:garage/home/home_bloc.dart';
 import 'package:garage/home/widgets/reserve_item.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+  HomePage({Key? key}) : super(key: key);
+  final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -13,6 +14,7 @@ class HomePage extends StatelessWidget {
       child: DefaultTabController(
         length: 2,
         child: Scaffold(
+          key: scaffoldKey,
           appBar: AppBar(
             elevation: 0,
             backgroundColor: Colors.transparent,
@@ -51,12 +53,22 @@ class HomePage extends StatelessWidget {
             ],
             bottom: const TabBar(indicatorPadding: EdgeInsets.only(top: 45), tabs: [Tab(text: "هفته جاری"), Tab(text: "هفته آتی")]),
           ),
-          body: BlocBuilder<HomeCubit, HomeState>(
-            buildWhen: (previous, current) => current != previous && current is HomePageLoadedState,
-            builder: (context, state) {
-              state = state as HomePageLoadedState;
-              return TabBarView(children: [getWeekTab(context, state.currentWeek), getWeekTab(context, state.nextWeek)]);
+          body: BlocListener<HomeCubit, HomeState>(
+            listenWhen: (previous, current) => previous != current && current is ReserveRequestResultReceivedState,
+            listener: (context, state) {
+              state = state as ReserveRequestResultReceivedState;
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text(state.message),
+                behavior: SnackBarBehavior.floating,
+              ));
             },
+            child: BlocBuilder<HomeCubit, HomeState>(
+              buildWhen: (previous, current) => current != previous && current is HomePageLoadedState,
+              builder: (context, state) {
+                state = state as HomePageLoadedState;
+                return TabBarView(children: [getWeekTab(context, state.currentWeek), getWeekTab(context, state.nextWeek)]);
+              },
+            ),
           ),
         ),
       ),
